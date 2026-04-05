@@ -99,6 +99,20 @@ Set `AUTH_URL` to your **canonical** site URL (no trailing slash), e.g. `https:/
 
 ## Troubleshooting
 
+### “There is a problem with the server configuration” (after login)
+
+Auth.js shows this when **`AUTH_SECRET` is missing or empty** in the environment that runs your deployment (almost always **Production** or **Preview** on Vercel).
+
+1. Vercel → **Project → Settings → Environment Variables**.
+2. Add **`AUTH_SECRET`** with a long random value (`npx auth secret` or `openssl rand -base64 32`).
+3. Enable it for **Production** and **Preview** (each environment is separate — a variable only on “Development” does **not** apply to deployed URLs).
+4. Add **`AUTH_URL`** = your live site origin, **no trailing slash** (e.g. `https://your-app.vercel.app` or your custom domain). Use the **same** kind of URL you open in the browser. For **Preview** deploys, either set `AUTH_URL` per preview (hard) or rely on `trustHost` + `VERCEL` (already enabled in code); **Preview** still needs **`AUTH_SECRET`**.
+5. **Redeploy** after saving variables.
+
+You can also set **`NEXTAUTH_SECRET`** to the same value (Auth.js accepts it as an alias for `AUTH_SECRET`).
+
+---
+
 | Issue | What to check |
 |--------|----------------|
 | Build fails on Prisma | Ensure `postinstall` runs (`prisma generate`). `DATABASE_URL` is **not** required at build time for generate only; if you added a build step that connects to DB, fix or remove it. |

@@ -24,7 +24,9 @@ export default async function LoginPage() {
         </div>
         <LoginForm variant="dark" />
         <p className="mt-6 text-center text-xs text-stone-500">
-          Test accounts (after running <code className="text-stone-400">npm run db:seed</code> on your database):
+          Test accounts — use the <strong className="text-stone-400">same</strong> Supabase DB as{" "}
+          <code className="text-stone-400">DATABASE_URL</code> on Vercel (run{" "}
+          <code className="text-stone-400">npm run db:seed</code> once with that URL):
           <br />
           <span className="mt-1 block text-stone-400">
             deepak@gmail.com / admin@123

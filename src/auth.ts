@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import authConfig from "./auth.config";
+import { DatabaseSignInError } from "./auth-errors";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -27,8 +28,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             role: user.role,
           };
         } catch (e) {
-          console.error("[auth] authorize failed (check DATABASE_URL on host):", e);
-          return null;
+          console.error("[auth] authorize failed (check DATABASE_URL / Supabase on host):", e);
+          throw new DatabaseSignInError();
         }
       },
     }),

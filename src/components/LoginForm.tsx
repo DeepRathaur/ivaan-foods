@@ -25,10 +25,14 @@ export function LoginForm({ variant = "light" }: LoginFormProps) {
       callbackUrl: "/dashboard",
     });
     setPending(false);
-    if (res?.error) {
+    if (res?.code === "database_unavailable") {
       setError(
-        "Invalid email or password — or no users exist yet on this server. If you just deployed, run db:seed once against your production DATABASE_URL (see DEPLOY.md).",
+        "Cannot connect to the database. On Vercel: set DATABASE_URL to your Supabase connection string (same DB you ran db:seed on), then redeploy. Check deployment logs for details.",
       );
+      return;
+    }
+    if (res?.error) {
+      setError("Invalid email or password.");
       return;
     }
     router.replace("/dashboard");

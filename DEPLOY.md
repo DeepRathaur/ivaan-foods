@@ -18,6 +18,8 @@ Use this checklist to run the app on **Vercel** with a hosted **PostgreSQL** dat
 
 Use a connection string that supports **SSL** if the host requires it (append `sslmode=require` for Supabase).
 
+**Local seed on Windows + Supabase:** if you see `self-signed certificate in certificate chain`, the app already relaxes TLS verification for `*.supabase.co` in `pg` (see `src/lib/pgPoolConfig.ts`). Run `npm run db:seed` again. To force strict checks: `DATABASE_SSL_NO_VERIFY=false`.
+
 ---
 
 ## 1. Create the database
@@ -91,7 +93,16 @@ Set `AUTH_URL` to your **canonical** site URL (no trailing slash), e.g. `https:/
 
 ## 5. After deploy
 
-- Open the production URL and sign in with a seeded user (or create one via seed).
+- **Seeding is required for login.** `prisma db push` only creates tables; it does **not** insert users. From your machine (with production `DATABASE_URL`):
+
+  ```bash
+  export DATABASE_URL="postgresql://..."   # same as Vercel
+  npm run db:seed
+  ```
+
+  Without this step, sign-in always shows **invalid email or password** because the `User` table is empty.
+
+- Open the production URL and sign in with a seeded user (see hints on the login page).
 - Smoke-test **login**, **POS**, and **dashboard**.
 - If you use the Capacitor Android app, set `server.url` in `capacitor.config.json` to this HTTPS URL and run `npx cap sync` (see `.env.example`).
 

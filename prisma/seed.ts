@@ -3,6 +3,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import pg from "pg";
+import { pgPoolConfig } from "../src/lib/pgPoolConfig";
 import { MENU_SEED } from "./menu-seed-data";
 
 const connectionString = process.env.DATABASE_URL;
@@ -10,7 +11,7 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is not set");
 }
 
-const pool = new pg.Pool({ connectionString });
+const pool = new pg.Pool(pgPoolConfig(connectionString));
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

@@ -14,17 +14,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
         const email = String(credentials.email).toLowerCase().trim();
-        const { prisma } = await import("@/lib/prisma");
-        const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) return null;
-        const match = await bcrypt.compare(String(credentials.password), user.passwordHash);
-        if (!match) return null;
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name ?? undefined,
-          role: user.role,
-        };
+        try {
+          const { prisma } = await import("@/lib/prisma");
+          const user = await prisma.user.findUnique({ where: { email } });
+          if (!user) return null;
+          const match = await bcrypt.compare(String(credentials.password), user.passwordHash);
+          if (!match) return null;
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name ?? undefined,
+            role: user.role,
+          };
+        } catch (e) {
+          console.error("[auth] authorize failed (check DATABASE_URL on host):", e);
+          return null;
+        }
       },
     }),
   ],

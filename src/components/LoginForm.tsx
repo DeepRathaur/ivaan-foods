@@ -26,7 +26,9 @@ export function LoginForm({ variant = "light" }: LoginFormProps) {
     });
     setPending(false);
     if (res?.error) {
-      setError("Invalid email or password.");
+      setError(
+        "Invalid email or password — or no users exist yet on this server. If you just deployed, run db:seed once against your production DATABASE_URL (see DEPLOY.md).",
+      );
       return;
     }
     router.replace("/dashboard");

@@ -24,10 +24,13 @@ export default async function LoginPage() {
         </div>
         <LoginForm variant="dark" />
         <p className="mt-6 text-center text-xs text-stone-500">
-          Admin: deepak@gmail.com / admin@123
+          Test accounts (after running <code className="text-stone-400">npm run db:seed</code> on your database):
           <br />
+          <span className="mt-1 block text-stone-400">
+            deepak@gmail.com / admin@123
+          </span>
           <span className="text-stone-600">
-            Also: admin@ivaanfoods.local / admin123 · cashier@ivaanfoods.local / cashier123
+            admin@ivaanfoods.local / admin123 · cashier@ivaanfoods.local / cashier123
           </span>
         </p>
       </div>

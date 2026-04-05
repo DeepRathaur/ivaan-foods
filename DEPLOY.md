@@ -58,11 +58,11 @@ npm run db:seed
 1. In Vercel: **Add New → Project** and import this repository.
 2. **Framework Preset:** Next.js (default).
 3. **Build command:** `npm run build` (default). `postinstall` already runs `prisma generate`.
-4. **Environment variables** (Settings → Environment Variables), for **Production** (and Preview if you want):
+4. **Environment variables** (Settings → Environment Variables). Add **`DATABASE_URL` (and `AUTH_*`) for every environment you use** — Production **and** Preview — or builds can fail or previews cannot reach the DB.
 
 | Name | Value | Required |
 |------|--------|----------|
-| `DATABASE_URL` | Same URI as step 2 | Yes |
+| `DATABASE_URL` | Same URI as step 2 | Yes (all envs: Production, Preview, Development) |
 | `AUTH_SECRET` | Long random string | Yes |
 | `AUTH_URL` | `https://your-project.vercel.app` (your real URL) | Yes for stable auth in production |
 

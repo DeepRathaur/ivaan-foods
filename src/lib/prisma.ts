@@ -21,6 +21,25 @@ function createPrisma(): PrismaClient {
   });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrisma();
+function getPrisma(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrisma();
+  }
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+/**
+ * Lazy proxy so importing `@/lib/prisma` does not run `createPrisma()` at module load.
+ * That allows `next build` when DATABASE_URL is unset at build time (e.g. misconfigured Vercel),
+ * and avoids failing during static analysis. DB access still throws if DATABASE_URL is missing.
+ */
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop, receiver) {
+    const client = getPrisma();
+    const value = Reflect.get(client, prop, receiver) as unknown;
+    if (typeof value === "function") {
+      return (value as (...a: unknown[]) => unknown).bind(client);
+    }
+    return value;
+  },
+}) as PrismaClient;

@@ -1,5 +1,8 @@
 import { AppNav } from "@/components/AppNav";
 
+/** Skip static page data collection at build time (needs DATABASE_URL + session at request time). */
+export const dynamic = "force-dynamic";
+
 export default function AppSectionLayout({
   children,
 }: {

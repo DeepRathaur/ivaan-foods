@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ivaan Foods</string>
+    <string name="title_activity_main">Ivaan Foods</string>
+    <string name="package_name">com.ivaanfoods.pos</string>
+    <string name="custom_url_scheme">com.ivaanfoods.pos</string>
+</resources>

@@ -1,0 +1,12 @@
+{
+  "appId": "com.ivaanfoods.pos",
+  "appName": "Ivaan Foods",
+  "webDir": "capacitor-www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0,
+      "launchAutoHide": false,
+      "backgroundColor": "#fffbeb"
+    }
+  }
+}
